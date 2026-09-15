@@ -260,6 +260,7 @@ function setMode(mode) {
       if (state.user) state.map.setView([state.user.lat, state.user.lng], Math.max(state.map.getZoom(), 14));
     }
     updateDrawState();
+    setAdminCollapsed(false);   // fresh start: panel expanded on admin entry
   } else if (state.user) {
     evaluateUser(false);
   }

@@ -131,7 +131,53 @@ function placeSafeZone(latlng) {
   commitZones('Safe zone "' + zone.name + '" placed.');
 }
 
-/** Reflect the active admin tool in the panel (hint text, buttons, highlights). */
+/* ------------------- collapsible admin panel ---------------------------- */
+let adminManualCollapsed = false;
+
+/** Manual minimise/expand (the ▾ button in the header, used while idle). */
+function setAdminCollapsed(collapsed) {
+  adminManualCollapsed = !!collapsed;
+  applyAdminPanelState();
+}
+
+/** Keep the panel in the right visual state:
+    - tool active  → compact mode: bulky parts hidden, Finish/Undo/Cancel + hint stay
+    - tool idle    → full panel, unless the admin manually minimised it */
+function applyAdminPanelState() {
+  const panel = $('adminPanel');
+  if (!panel) return;
+  const toolActive = !!state.drawing.active || !!state.placingSafe;
+  panel.classList.toggle('tool-active', toolActive);
+  panel.classList.toggle('collapsed', toolActive ? false : adminManualCollapsed);
+  const btn = $('btnCollapseAdmin');
+  if (btn) btn.hidden = toolActive;
+  syncAdminPanelChrome();
+}
+
+/** Keep the header status (mini hint + drawing glow) in sync with the tools. */
+function syncAdminPanelChrome() {
+  const panel = $('adminPanel');
+  if (!panel) return;
+  const active = !!state.drawing.active || !!state.placingSafe;
+  panel.classList.toggle('drawing-active', active);
+
+  const mini = $('adminMiniHint');
+  if (!mini) return;
+  if (state.drawing.active) {
+    mini.textContent = state.drawing.points.length
+      ? '✏️ ' + state.drawing.points.length + (state.drawing.points.length === 1 ? ' corner' : ' corners')
+      : '✏️ tap map to start';
+  } else if (state.placingSafe) {
+    mini.textContent = '✚ tap map → safe zone';
+  } else {
+    mini.textContent = '';
+  }
+  mini.hidden = !active;
+}
+
+/** Reflect the active admin tool in the panel (hint text, buttons, highlights).
+    Also auto-minimises the panel while an admin tool is active so the map gets
+    the screen (critical on phones), and expands it again when the tool ends. */
 function updateDrawState() {
   const d = state.drawing;
   const hint = $('drawState'), actions = $('drawActions');
@@ -142,7 +188,7 @@ function updateDrawState() {
     if (d.active) {
       hint.textContent = d.points.length
         ? d.points.length + ' corner' + (d.points.length === 1 ? '' : 's') + ' placed — ' +
-          (d.points.length >= 3 ? 'finish, undo or keep tapping.' : 'add at least ' + (3 - d.points.length) + ' more.')
+          (d.points.length >= 3 ? 'finish, undo or keep tapping the map.' : 'add at least ' + (3 - d.points.length) + ' more.')
         : 'Tap the map to add the first corner of the danger zone.';
     } else if (state.placingSafe) {
       hint.textContent = 'Tap the map to drop a safe zone (the label above is optional).';
@@ -155,6 +201,11 @@ function updateDrawState() {
   if (undo) undo.disabled = d.points.length === 0;
   if (drawBtn) drawBtn.classList.toggle('active', !!d.active);
   if (placeBtn) placeBtn.classList.toggle('active', !!state.placingSafe);
+
+  // auto-compaction: while a tool is active the bulky parts of the panel
+  // fold away so the map gets the screen (Finish/Undo stay available)
+  applyAdminPanelState();
+  syncAdminPanelChrome();
 }
 
 /* --------------------------- map event handlers ------------------------- */

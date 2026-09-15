@@ -41,6 +41,10 @@ function wireUI() {
   on('btnFinishPoly', 'click', function () { finishPolygon(); });
   on('btnUndoVertex', 'click', undoVertex);
   on('btnCancelDraw', 'click', function () { cancelDrawing(false); });
+  on('btnCollapseAdmin', 'click', function () {
+    const panel = $('adminPanel');
+    if (panel) setAdminCollapsed(!panel.classList.contains('collapsed'));
+  });
 
   on('btnExport', 'click', exportZones);
   on('btnImport', 'click', function () { const f = $('importFile'); if (f) f.click(); });

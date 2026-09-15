@@ -78,6 +78,11 @@ works on any domain the app is deployed to.)
   (`Polygon` = danger, `Point` = safe), RFC 7946 coordinate order `[lng, lat]`.
   Imports accept GeoJSON or the older internal array shape, and coordinates in either order.
 - **🎯 Fit all zones**, **🗑 Clear all zones**.
+- The panel **auto-compacts while a tool is active** (draw / place safe): zone list, counts and
+  export rows fold away so the map gets the screen — the Finish / Undo / Cancel buttons and the
+  hint stay visible (double-tap the map also finishes a polygon). It expands again when the tool
+  ends. The **▾** button in the header minimises/expands the panel manually; a mini status
+  (`✏️ 3 corners`, `✚ tap map → safe zone`) shows in the header during compaction.
 
 **Keyboard shortcuts (admin)**
 

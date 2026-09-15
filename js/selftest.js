@@ -238,7 +238,10 @@ function runScenarioTests2() {
   check('admin: three vertices captured', state.drawing.points.length === 3, state.drawing.points.length);
   check('admin: finish button enabled at 3 points', $('btnFinishPoly').disabled === false);
   check('admin: live preview polygon + rubber band exist', !!state.drawing.guide && !!state.drawing.rubber);
+  check('admin: panel auto-compacts while drawing', $('adminPanel').classList.contains('tool-active') === true);
+  check('admin: Finish/Undo stay visible while compact', !$('adminPanel').classList.contains('collapsed'));
   finishPolygon();
+  check('admin: panel expands after finishing', !$('adminPanel').classList.contains('tool-active'));
   const drawn = state.zones[state.zones.length - 1];
   check('admin: finishing saved a new zone', state.zones.length === before + 1, state.zones.length);
   check('admin: the new zone is a danger zone', !!drawn && drawn.kind === 'danger');

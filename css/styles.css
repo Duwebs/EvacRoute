@@ -163,6 +163,22 @@ html,body{
 .admin-row .dot.safe{background:var(--safe);box-shadow:0 0 8px rgba(34,197,94,.8)}
 .admin-row .name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .admin-row .meta{color:var(--muted);font-size:11px}
+/* ---------- collapsible admin panel ---------- */
+#btnCollapseAdmin{transition:transform .25s ease}
+#adminPanel.collapsed #btnCollapseAdmin{transform:rotate(-90deg)}
+#adminPanel.collapsed #adminBody{display:none}
+/* compact mode while a tool is active: hide the bulky parts, keep the
+   Finish/Undo/Cancel buttons and the hint so drawing still works on mobile */
+#adminPanel.tool-active #zoneCounts,
+#adminPanel.tool-active #adminList,
+#adminPanel.tool-active .tool-row:not(#drawActions),
+#adminPanel.tool-active #btnCollapseAdmin{display:none}
+#adminPanel.tool-active #adminBody{gap:7px}
+.admin-mini{
+  font-size:11px;font-weight:700;letter-spacing:.04em;color:#ffd166;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0
+}
+#adminPanel.drawing-active{border-color:rgba(255,59,48,.45);box-shadow:0 0 0 1px rgba(255,59,48,.35),var(--shadow)}
 .icon-btn{
   appearance:none;font:inherit;font-size:13px;line-height:1;cursor:pointer;
   background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);color:var(--txt);

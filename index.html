@@ -47,9 +47,12 @@
     <section id="adminPanel" class="card" hidden aria-label="Admin tools">
       <div class="admin-head">
         <span class="admin-title">ADMIN TOOLS</span>
+        <span id="adminMiniHint" class="admin-mini" hidden></span>
         <span class="spacer"></span>
+        <button id="btnCollapseAdmin" class="icon-btn" type="button" title="Minimize panel" aria-expanded="true" aria-controls="adminBody">▾</button>
         <button id="btnHideAdmin" class="btn btn-ghost" type="button">User view</button>
       </div>
+      <div id="adminBody" class="admin-body">
       <div id="zoneCounts" class="counts">0 danger zones, 0 safe zones active</div>
       <div id="adminList" class="admin-list" aria-label="Configured zones"></div>
       <div class="tool-row">
@@ -75,6 +78,7 @@
       <input id="importFile" class="sr-only" type="file" tabindex="-1"
              accept=".json,.geojson,application/json,application/geo+json"
              aria-label="Import zones from a JSON or GeoJSON file" />
+      </div>
     </section>
   </div>
 

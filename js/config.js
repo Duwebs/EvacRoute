@@ -52,7 +52,8 @@ const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 const REQUIRED_IDS = ['map','uiLayer','topWrap','bottomPanel','topPanel','statusBadge','statusLine',
-  'routeSummary','dirArrow','dirText','dirDeg','coordsLine','adminPanel','zoneCounts','btnDrawDanger',
+  'routeSummary','dirArrow','dirText','dirDeg','coordsLine','adminPanel','adminBody','adminMiniHint',
+  'btnCollapseAdmin','zoneCounts','btnDrawDanger',
   'btnPlaceSafe','safeLabel','drawState','drawActions','btnFinishPoly','btnUndoVertex','btnCancelDraw',
   'btnExport','btnImport','btnFitZones','btnClearAll','adminList','importFile','toastHost','btnLocate',
   'btnMaps','geoModal','geoModalMsg','manualLat','manualLng','btnUseManual','btnUseDemo',
