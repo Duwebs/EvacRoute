@@ -12,7 +12,6 @@ No build step, no package manager, no server code — Leaflet 1.9.4 (CDN) + Open
 ```
 EvacRoute/
 ├── index.html            markup only: DOM + <script>/<link> includes (load order matters)
-├── index_monolith_backup.html   the old single-file version (kept as backup)
 ├── css/
 │   └── styles.css        all styling (dark glass UI, Leaflet theming, keyframes)
 └── js/
