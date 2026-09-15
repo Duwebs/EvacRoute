@@ -23,6 +23,9 @@ const state = {
   routeEnd: null,
   lastEval: 0,
   lastDangerAlert: 0,
+  dangerEpisode: false,      // true while the user is inside a danger zone
+  dangerPopupOpen: false,    // is the full-screen danger warning visible?
+  dangerAutoRedirect: true,  // false once the user tapped "stay on this screen"
   lastFitKey: '',
   layers: { danger: new Map(), safe: new Map() },
   drawing: { active: false, points: [], vertexLayers: [], guide: null, rubber: null },

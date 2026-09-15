@@ -56,11 +56,29 @@ function wireUI() {
   on('btnClearAll', 'click', clearAllZones);
   on('btnFitZones', 'click', function () { if (!fitAllZones(true)) toast('No zones to fit.', 'warn'); });
 
+  /* ---- emergency danger popup (js/alert.js) ---- */
+  on('btnTestAlarm', 'click', function () {
+    playDangerAlert();
+    vibrate(ALERT_VIBRATE);
+    toast('Emergency alarm test — turn your volume up to hear it.', 'warn');
+  });
+  on('btnDangerMaps', 'click', openDangerRoute);
+  on('btnDangerStay', 'click', cancelDangerAutoRedirect);
+  on('btnDangerClose', 'click', function () { cancelDangerAutoRedirect(); hideDangerPopup(); });
+
   on('btnUseManual', 'click', useManualCoords);
   on('btnUseDemo', 'click', useDemoLocation);
   on('btnRetryGeo', 'click', function () { hideGeoModal(); requestGps(true); });
   on('manualLat', 'keydown', function (e) { if (e.key === 'Enter') useManualCoords(); });
   on('manualLng', 'keydown', function (e) { if (e.key === 'Enter') useManualCoords(); });
+
+  /* Esc dismisses the emergency warning and stops the auto-redirect */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && state.dangerPopupOpen) {
+      cancelDangerAutoRedirect();
+      hideDangerPopup();
+    }
+  });
 
   document.addEventListener('click', handleDelegatedClick);
   document.addEventListener('keydown', handleKeydown);

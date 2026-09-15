@@ -57,4 +57,6 @@ const REQUIRED_IDS = ['map','uiLayer','topWrap','bottomPanel','topPanel','status
   'btnPlaceSafe','safeLabel','drawState','drawActions','btnFinishPoly','btnUndoVertex','btnCancelDraw',
   'btnExport','btnImport','btnFitZones','btnClearAll','adminList','importFile','toastHost','btnLocate',
   'btnMaps','geoModal','geoModalMsg','manualLat','manualLng','btnUseManual','btnUseDemo',
-  'btnRetryGeo','boot','bootMsg','bootSub2','btnHideAdmin'];
+  'btnRetryGeo','boot','bootMsg','bootSub2','btnHideAdmin','btnTestAlarm',
+  'dangerModal','dangerMsg','dangerTargetName','dangerTargetMeta','dangerArrow',
+  'dangerDirText','dangerCountdown','btnDangerMaps','btnDangerStay','btnDangerClose'];

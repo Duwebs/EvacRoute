@@ -75,6 +75,9 @@
         <button id="btnFitZones" class="btn" type="button">🎯 Fit all zones</button>
         <button id="btnClearAll" class="btn btn-ghost" type="button">🗑 Clear all zones</button>
       </div>
+      <div class="tool-row">
+        <button id="btnTestAlarm" class="btn" type="button">🔊 Test emergency alarm</button>
+      </div>
       <input id="importFile" class="sr-only" type="file" tabindex="-1"
              accept=".json,.geojson,application/json,application/geo+json"
              aria-label="Import zones from a JSON or GeoJSON file" />
@@ -110,6 +113,33 @@
       <button id="btnRetryGeo" class="btn btn-ghost" type="button">Try GPS again</button>
     </div>
     <p class="modal-note" id="geoModalNote">Tip: browsers only share GPS on <b>https://</b> or <b>localhost</b>. Opening this file directly as <code>file://</code> blocks location — serve it with <code>python -m http.server</code> instead.</p>
+  </div>
+</div>
+
+<div id="dangerModal" role="alertdialog" aria-modal="true" aria-labelledby="dangerTitle" aria-describedby="dangerMsg">
+  <div class="card danger-card">
+    <div class="danger-head">
+      <span class="danger-siren" aria-hidden="true">🚨</span>
+      <span class="danger-title" id="dangerTitle">DANGER ZONE</span>
+    </div>
+    <div class="modal-msg" id="dangerMsg">You are inside a danger zone. Evacuate immediately.</div>
+    <div class="danger-target">
+      <div class="danger-target-label">Evacuate to</div>
+      <div class="danger-target-name" id="dangerTargetName">—</div>
+      <div class="danger-target-meta" id="dangerTargetMeta">—</div>
+    </div>
+    <div class="danger-dirrow">
+      <div id="dangerArrow" class="danger-arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2 4.4 21.4l7.6-4.1 7.6 4.1L12 2.2Zm0 3.9 4.4 11.1L12 15l-4.4 2.2L12 6.1Z"/></svg>
+      </div>
+      <div class="danger-dirtext" id="dangerDirText">Head —</div>
+    </div>
+    <div class="danger-countdown" id="dangerCountdown">Opening Google Maps in 10 s…</div>
+    <div class="modal-actions danger-actions">
+      <button id="btnDangerMaps" class="btn btn-primary" type="button">🧭 Open route in Google Maps now</button>
+      <button id="btnDangerStay" class="btn" type="button">⏸ Stay on this screen</button>
+      <button id="btnDangerClose" class="btn btn-ghost" type="button">✕ Close warning</button>
+    </div>
   </div>
 </div>
 

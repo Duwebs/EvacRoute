@@ -19,7 +19,7 @@ EvacRoute/
     ├── utils.js          helpers: $, geometry math, formatting, toast()
     ├── config.js         URL params, storage keys, demo dataset, layer styles
     ├── state.js          single shared `state` object
-    ├── alert.js          danger-zone emergency siren (Web Audio, EAS-style two-tone)
+    ├── alert.js          danger siren + full-screen warning popup + 10 s Google Maps auto-redirect
     ├── storage.js        localStorage persistence + GeoJSON parse/serialise + demo seeding
     ├── zones.js          zone CRUD + GeoJSON export/import
     ├── map.js            Leaflet init, zone/route rendering, admin list UI, mode switching
@@ -57,12 +57,23 @@ Map tiles need an internet connection (OpenStreetMap); everything else works off
    compass arrow, your coordinates/accuracy and the active zone counts.
 3. When a route is available, **🧭 Open route in Google Maps** opens walking directions.
    Position updates live via `watchPosition`; entering or leaving a danger zone raises a toast.
-   Entering a danger zone also sounds a government-style emergency siren (EAS-like two-tone,
-   synthesised in `js/alert.js` — no audio file) plus a strong vibration pattern; it repeats
-   every 30 s while the user remains inside. Mobile browsers require one tap on the page
-   before audio can play, so the app unlocks audio on the first touch automatically.
-   While inside a danger zone the screen is also kept awake (Screen Wake Lock API, where
-   supported) so a dimming display never hides the guidance.
+   Entering a danger zone triggers the full emergency sequence:
+   - a **loud, frantic siren** — a fast 400↔1200 Hz wail layered under the EAS-like
+     853/960 Hz two-tone bursts, generated in `js/alert.js` (no audio file to download) —
+     plus a strong vibration pattern. It repeats **every 10 seconds** while the user stays
+     inside, and stops as soon as they are back in safety.
+   - a **full-screen DANGER POPUP** naming the **nearest** safe zone, its distance, the
+     heading (`Head NORTH-WEST`) and a large rotating compass arrow.
+   - after **10 seconds** the app **auto-opens Google Maps** with walking directions from
+     the user's position to that nearest safe zone (a new tab where the browser allows it,
+     otherwise the same tab — which can never be popup-blocked). **⏸ Stay on this screen**
+     cancels the hand-off while keeping the warning visible; **✕ Close warning** dismisses
+     it so the map (with the route line) can be seen — the bottom
+     **🧭 Open route in Google Maps** button still works for a manual start.
+   Mobile browsers require one tap on the page before audio can play, so the app unlocks
+   audio on the first touch automatically. While inside a danger zone the screen is also
+   kept awake (Screen Wake Lock API, where supported) so a dimming display never hides
+   the guidance.
 
 **Admin view** (hidden from normal users — open `/admin` on either domain —
 `https://evacrouteweb.vercel.app/admin` or `https://evac-route.vercel.app/admin` (or `?mode=admin`)

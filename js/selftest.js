@@ -95,6 +95,18 @@ function runSelfTest() {
   check('Google Maps control is a link styled as a button',
     !!$('btnMaps') && $('btnMaps').tagName === 'A' && $('btnMaps').classList.contains('btn'));
   check('boot overlay exists and is hidden after boot', !!$('boot') && $('boot').classList.contains('hidden') === !!state.bootHidden);
+
+  /* ---- emergency warning popup + siren configuration ---- */
+  check('CSS: dangerShake keyframes present', hasCssKeyframe('dangerShake'));
+  check('CSS: dangerPop keyframes present', hasCssKeyframe('dangerPop'));
+  check('danger warning popup exists in the DOM', !!$('dangerModal'));
+  check('danger warning popup is closed while the user is safe',
+    !!$('dangerModal') && !$('dangerModal').classList.contains('open'));
+  check('danger alert: auto-redirect delay is 10 s', ALERT_REDIRECT_MS === 10000, ALERT_REDIRECT_MS + ' ms');
+  check('danger alert: siren repeats every 10 s', ALERT_REPEAT_MS === 10000, ALERT_REPEAT_MS + ' ms');
+  check('danger alert: siren is loud (volume > 0.5)', ALERT_VOLUME > 0.5, String(ALERT_VOLUME));
+  check('danger alert: burst pattern is fast (tone on <= 0.3 s)', ALERT_BURST_ON <= 0.3,
+    ALERT_BURST_ON + ' s on / ' + ALERT_BURST_OFF + ' s off');
   return { results: results, failed: failed };
 }
 
@@ -178,6 +190,31 @@ function runScenarioTests() {
         $('btnMaps').getAttribute('href').indexOf('travelmode=walking') > -1 &&
         $('btnMaps').getAttribute('href').indexOf('destination=28.640700,77.205300') > -1,
         $('btnMaps').getAttribute('href'));
+
+      /* --- emergency warning popup + 10 s auto-redirect to Google Maps --- */
+      showDangerPopup();
+      check('danger popup: opens when triggered', $('dangerModal').classList.contains('open'));
+      check('danger popup: names the nearest safe zone',
+        textOf('dangerTargetName') === 'Safe Zone A', textOf('dangerTargetName'));
+      check('danger popup: shows the distance + heading',
+        textOf('dangerTargetMeta').indexOf('1.2 km') > -1 && textOf('dangerTargetMeta').indexOf('NORTH-WEST') > -1,
+        textOf('dangerTargetMeta'));
+      check('danger popup: direction arrow matches the bearing',
+        /rotate\(-?\d+(\.\d+)?deg\)/.test($('dangerArrow').style.transform), $('dangerArrow').style.transform);
+      check('danger popup: countdown starts at 10 s',
+        /Opening Google Maps in 10 s/.test(textOf('dangerCountdown')), textOf('dangerCountdown'));
+      check('danger popup: hand-off link goes to the nearest safe zone',
+        ($('btnDangerMaps').getAttribute('data-url') || '').indexOf('destination=28.640700,77.205300') > -1,
+        $('btnDangerMaps').getAttribute('data-url'));
+      cancelDangerAutoRedirect();
+      check('danger popup: "stay on this screen" cancels the auto-redirect',
+        state.dangerAutoRedirect === false && /stopped/i.test(textOf('dangerCountdown')),
+        textOf('dangerCountdown'));
+      hideDangerPopup();
+      check('danger popup: closes on demand', !$('dangerModal').classList.contains('open'));
+      endDangerEpisode();
+      check('danger popup: episode fully resets once dismissed',
+        state.dangerEpisode === false && state.dangerAutoRedirect === true && state.lastDangerAlert === 0);
     });
   } else {
     check('danger scenario skipped (no demo zones loaded)', true, 'empty dataset run');
