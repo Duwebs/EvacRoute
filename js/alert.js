@@ -87,9 +87,12 @@ function playDangerAlert() {
 }
 
 /** Called after every user re-evaluation: sound the alert on entering a
-    danger zone, and repeat every ALERT_REPEAT_MS while still inside. */
+    danger zone, and repeat every ALERT_REPEAT_MS while still inside.
+    Also keeps the phone screen awake while the user is in danger —
+    a dimming/black screen is the last thing needed in a panic. */
 function maybeDangerAlert() {
   if (RUN_SELFTEST) return;   // keep the self-test suite silent
+  updateDangerWakeLock();
   if (!state.inside.length) {
     state.lastDangerAlert = 0;
     return;
@@ -101,6 +104,24 @@ function maybeDangerAlert() {
     // vibration fallback + attention (also fires on browsers without audio)
     if (navigator.vibrate) { try { navigator.vibrate([200, 100, 200, 100, 400]); } catch (e) {} }
   }
+}
+
+/* ---------------- keep the screen awake while in danger ----------------- */
+let _wakeLock = null;
+function updateDangerWakeLock() {
+  try {
+    if (!('wakeLock' in navigator)) return;   // unsupported — ignore silently
+    if (state.inside.length && !_wakeLock) {
+      navigator.wakeLock.request('screen').then(function (lock) {
+        _wakeLock = lock;
+        lock.addEventListener('release', function () { _wakeLock = null; });
+      }).catch(function () { _wakeLock = null; });
+    } else if (!state.inside.length && _wakeLock) {
+      const lock = _wakeLock;
+      _wakeLock = null;
+      try { lock.release(); } catch (e) { /* already released */ }
+    }
+  } catch (e) { /* wake lock is best-effort — never break the app */ }
 }
 
 wireAlertUnlock();

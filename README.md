@@ -61,10 +61,14 @@ Map tiles need an internet connection (OpenStreetMap); everything else works off
    synthesised in `js/alert.js` — no audio file) plus a strong vibration pattern; it repeats
    every 30 s while the user remains inside. Mobile browsers require one tap on the page
    before audio can play, so the app unlocks audio on the first touch automatically.
+   While inside a danger zone the screen is also kept awake (Screen Wake Lock API, where
+   supported) so a dimming display never hides the guidance.
 
-**Admin view** (hidden from normal users — open `https://evac-route.vercel.app/admin` (or `?mode=admin`)
-and enter the admin passcode, default `1234`, set in `js/config.js` → `ADMIN_PASSCODE`; there is no
-admin button in the UI. The `/admin` path is served via the rewrite in `vercel.json`.)
+**Admin view** (hidden from normal users — open `/admin` on either domain —
+`https://evacrouteweb.vercel.app/admin` or `https://evac-route.vercel.app/admin` (or `?mode=admin`)
+— and enter the admin passcode, default `1234`, set in `js/config.js` → `ADMIN_PASSCODE`; there is
+no admin button in the UI. The `/admin` path is served via the rewrite in `vercel.json`, so it
+works on any domain the app is deployed to.)
 - **＋ Draw danger zone** → tap the map to add corners (dashed live preview + rubber band),
   then **✓ Finish polygon**. Names are auto-assigned (`Danger Zone 1`, `Danger Zone 2`, …).
 - **＋ Place safe zone** → type an optional label, then tap the map. The label is cleared after
@@ -120,5 +124,9 @@ renders a `PASS`/`FAIL` report, sets the title to `EVACROUTE selftest <passed>/<
 - **Bootstrap safety**: an early script block records uncaught errors and unhandled rejections
   (`window.__EVACROUTE_ERRORS__`, plus a hidden `#js-error` node), and `init()` reports boot
   failures in a toast instead of failing silently.
+- **Panic-friendly / device-friendly UI**: `css/styles.css` ends with a dedicated responsive
+  section — larger touch targets, louder status text, a flashing danger banner and a pulsing
+  route button on phones, a compact landscape layout, tablet/desktop sizing, and no accidental
+  zooms (`touch-action: manipulation`, 16px inputs, `user-select` guards).
 - Debugging hooks: `window.__EVACROUTE_STATE__`, `window.__EVACROUTE_ERRORS__`,
   `window.__EVACROUTE_SELFTEST__`.

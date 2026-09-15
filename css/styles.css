@@ -298,11 +298,100 @@ path.dz-poly.dz-alert{filter:drop-shadow(0 0 8px rgba(255,40,40,.95))}
   #bottomPanel .btn{flex:1 1 auto;width:auto}
 }
 
+/* ============================================================
+   Device-friendly / panic-mode UX (mobile-first)
+   In a panic users are on phones: bigger targets, louder
+   status, one obvious action, no accidental zooms.
+   ============================================================ */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button,.btn,.icon-btn{touch-action:manipulation}
+#uiLayer{-webkit-user-select:none;user-select:none}
+#uiLayer .text-input{-webkit-user-select:text;user-select:text}
+
+/* ---------- phones (portrait & small screens) ---------- */
+@media (max-width:640px){
+  html,body{font-size:16px}
+  .btn{min-height:54px;font-size:15.5px;border-radius:14px;padding:12px 14px}
+  .tool-row .btn{min-height:50px;font-size:14px}
+  .icon-btn{width:40px;height:40px;flex:0 0 40px;font-size:15px}
+  .badge{font-size:12px;padding:7px 12px}
+  #statusLine{font-size:17px;padding:13px 14px;margin-top:12px}
+  #routeSummary{font-size:15.5px;margin-top:11px}
+  .stat-value{font-size:17px}
+  .stat-label{font-size:11.5px}
+  #dirArrow{width:56px;height:56px;flex:0 0 56px}
+  #dirArrow svg{width:30px;height:30px}
+  #dirDeg{font-size:12.5px}
+  #coordsLine{font-size:12px}
+  .toast{font-size:14px;padding:12px 14px}
+  .text-input{font-size:16px;min-height:48px;padding:11px 12px}
+  .admin-row{font-size:14px;padding:9px 10px}
+  .admin-list{max-height:30vh}
+  .counts,.hint{font-size:13px}
+  .admin-title{font-size:12.5px}
+  .modal-title{font-size:18px}
+  .modal-msg{font-size:14.5px}
+  .modal-actions .btn{min-height:50px}
+  .pop-actions .btn{min-height:40px;font-size:13px}
+  .leaflet-control-zoom a{width:34px!important;height:34px!important;line-height:34px!important;font-size:20px!important}
+  .leaflet-control-attribution{font-size:11px!important}
+  /* danger mode must be impossible to miss */
+  #statusLine.danger{animation:dangerFlash 1.15s ease-in-out infinite}
+  /* the one action that matters gets a pulsing glow */
+  #btnMaps:not([hidden]){animation:ctaPulse 1.6s ease-in-out infinite}
+}
+@keyframes dangerFlash{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
+@keyframes ctaPulse{
+  0%,100%{box-shadow:0 6px 16px rgba(31,102,208,.35)}
+  50%{box-shadow:0 0 0 12px rgba(63,143,251,.22),0 6px 20px rgba(31,102,208,.5)}
+}
+
+/* ---------- very small phones (≤360px) ---------- */
+@media (max-width:360px){
+  .btn{font-size:14.5px;min-height:52px}
+  #statusLine{font-size:16px}
+  #routeSummary{font-size:14.5px}
+  #dirArrow{width:50px;height:50px;flex:0 0 50px}
+  #dirArrow svg{width:26px;height:26px}
+}
+
 /* ---------- accessibility ---------- */
 [hidden]{display:none!important}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 :focus-visible{outline:2px solid #7ab6ff;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){
-  .user-pulse,.badge-danger,.route-dash,.toast{animation:none!important}
+  .user-pulse,.badge-danger,.route-dash,.toast,#statusLine.danger,#btnMaps:not([hidden]){animation:none!important}
   #dirArrow,.safe-pin{transition:none!important}
+}
+
+/* ---------- landscape phones / short screens ----------
+   Compact the status card so the map stays usable. */
+@media (max-height:480px) and (orientation:landscape){
+  #uiLayer{flex-direction:row;align-items:stretch;justify-content:space-between;gap:8px;
+    padding:calc(var(--safe-top) + 8px) 12px calc(var(--safe-bottom) + 8px)}
+  #topWrap{flex:0 0 330px;max-width:330px}
+  #bottomPanel{max-width:330px;flex-direction:row;flex-wrap:wrap}
+  #bottomPanel .btn{min-height:48px;font-size:13.5px}
+  #topPanel{padding:8px 10px}
+  #statusLine{margin-top:7px;font-size:14.5px;padding:8px 10px}
+  #routeSummary{margin-top:6px;font-size:13px}
+  .dirRow{margin-top:6px;gap:8px}
+  #dirArrow{width:38px;height:38px;flex:0 0 38px}
+  #dirArrow svg{width:20px;height:20px}
+  #coordsLine{margin-top:5px;font-size:10.5px}
+  .badge{font-size:10.5px;padding:5px 9px}
+}
+
+/* ---------- tablets & desktop ---------- */
+@media (min-width:900px){
+  #uiLayer{padding:calc(var(--safe-top) + 18px) 22px calc(var(--safe-bottom) + 18px)}
+  #topWrap,#bottomPanel,#toastHost{max-width:620px}
+  .btn{min-height:48px;font-size:14px}
+  #topPanel{padding:14px 16px}
+  #dirArrow{width:48px;height:48px;flex:0 0 48px}
+  #dirArrow svg{width:26px;height:26px}
+}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{transform:translateY(-1px)}
+  .icon-btn:hover{transform:scale(1.08)}
 }
