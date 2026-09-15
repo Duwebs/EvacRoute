@@ -242,8 +242,6 @@ function setMode(mode) {
 
   const panel = $('adminPanel');
   if (panel) panel.hidden = state.mode !== 'admin';
-  const adminBtn = $('btnAdmin');
-  if (adminBtn) adminBtn.textContent = state.mode === 'admin' ? '👤 User view' : '🛠 Admin panel';
 
   try {
     const url = new URL(window.location.href);

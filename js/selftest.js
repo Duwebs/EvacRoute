@@ -91,7 +91,7 @@ function runSelfTest() {
   check('CSS: dashMove keyframes present', hasCssKeyframe('dashMove'));
   check('CSS: dotPulse keyframes present', hasCssKeyframe('dotPulse'));
   check('CSS: badgePulse keyframes present', hasCssKeyframe('badgePulse'));
-  check('bottom action panel wired', !!$('btnLocate') && !!$('btnAdmin') && !!$('btnMaps'));
+  check('bottom action panel wired', !!$('btnLocate') && !!$('btnMaps'));
   check('Google Maps control is a link styled as a button',
     !!$('btnMaps') && $('btnMaps').tagName === 'A' && $('btnMaps').classList.contains('btn'));
   check('boot overlay exists and is hidden after boot', !!$('boot') && $('boot').classList.contains('hidden') === !!state.bootHidden);
@@ -223,8 +223,11 @@ function runScenarioTests2() {
   const modeBefore = state.mode;
   setMode('admin');
   check('admin: panel becomes visible', $('adminPanel').hidden === false);
-  check('admin: URL records ?mode=admin', window.location.search.indexOf('mode=admin') > -1, window.location.search);
-  check('admin: toggle button relabelled to user view', textOf('btnAdmin').indexOf('User view') > -1, textOf('btnAdmin'));
+  check('admin: URL records ?mode=admin or the /admin path',
+    window.location.search.indexOf('mode=admin') > -1 ||
+    window.location.pathname.replace(/\/+$/, '') === ADMIN_PATH,
+    window.location.search + ' ' + window.location.pathname);
+  check('admin: no admin button shown to normal users', !$('btnAdmin'));
 
   const before = state.zones.length;
   beginDrawDanger();

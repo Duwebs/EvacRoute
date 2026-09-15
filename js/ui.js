@@ -34,7 +34,6 @@ function wireUI() {
   function on(id, evt, fn) { const el = $(id); if (el) el.addEventListener(evt, fn); }
 
   on('btnLocate', 'click', function () { requestGps(true); });
-  on('btnAdmin', 'click', function () { setMode(state.mode === 'admin' ? 'user' : 'admin'); });
   on('btnHideAdmin', 'click', function () { setMode('user'); });
 
   on('btnDrawDanger', 'click', beginDrawDanger);

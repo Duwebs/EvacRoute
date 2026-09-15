@@ -57,7 +57,9 @@ Map tiles need an internet connection (OpenStreetMap); everything else works off
 3. When a route is available, **🧭 Open route in Google Maps** opens walking directions.
    Position updates live via `watchPosition`; entering or leaving a danger zone raises a toast.
 
-**Admin view** (`🛠 Admin panel`, or `?mode=admin`)
+**Admin view** (hidden from normal users — open `https://evac-route.vercel.app/admin` (or `?mode=admin`)
+and enter the admin passcode, default `1234`, set in `js/config.js` → `ADMIN_PASSCODE`; there is no
+admin button in the UI. The `/admin` path is served via the rewrite in `vercel.json`.)
 - **＋ Draw danger zone** → tap the map to add corners (dashed live preview + rubber band),
   then **✓ Finish polygon**. Names are auto-assigned (`Danger Zone 1`, `Danger Zone 2`, …).
 - **＋ Place safe zone** → type an optional label, then tap the map. The label is cleared after

@@ -4,15 +4,30 @@
    ========================================================================== */
 'use strict';
 
+function requestAdminAccess() {
+  // Admin mode is URL-only (?mode=admin) and passcode-protected, so regular
+  // users never see any admin UI. Change ADMIN_PASSCODE in js/config.js.
+  try {
+    const entry = window.prompt('Admin access — enter the admin passcode:');
+    if (entry === null) return false;
+    if (entry === ADMIN_PASSCODE) return true;
+    toast('Wrong passcode — staying in user view.', 'err');
+  } catch (e) { /* prompt unavailable — deny */ }
+  return false;
+}
+
 function boot() {
   loadZones();
   initMap();
   wireUI();
   renderAllZones();
-  setMode(START_MODE);
+
+  let mode = START_MODE;
+  if (mode === 'admin' && !requestAdminAccess()) mode = 'user';
+  setMode(mode);
   updatePanel();
 
-  if (START_MODE === 'admin') {
+  if (mode === 'admin') {
     // with no zones stored yet, try a quiet fix so the admin starts near themselves
     if (!state.zones.length && 'geolocation' in navigator) {
       try {

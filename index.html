@@ -11,13 +11,13 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <!-- EVACROUTE styles (extracted from the old inline <style> block) -->
-<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
 
 <!-- early error capture: a separate script so a syntax error in any later
      script is still reported instead of failing silently -->
-<script src="js/errors.js"></script>
+<script src="/js/errors.js"></script>
 
 <!-- ============================ DOM ============================ -->
 <div id="map"></div>
@@ -82,7 +82,6 @@
 
   <div id="bottomPanel">
     <button id="btnLocate" class="btn" type="button">📍 Locate me again</button>
-    <button id="btnAdmin" class="btn" type="button">🛠 Admin panel</button>
     <a id="btnMaps" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" hidden>🧭 Open route in Google Maps</a>
   </div>
 </div>
@@ -126,16 +125,16 @@
 
 <!-- EVACROUTE application logic (order matters: utils before config,
      config before state; the rest are function-only modules) -->
-<script src="js/utils.js"></script>
-<script src="js/config.js"></script>
-<script src="js/state.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/zones.js"></script>
-<script src="js/map.js"></script>
-<script src="js/draw.js"></script>
-<script src="js/user.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/selftest.js"></script>
-<script src="js/boot.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/config.js"></script>
+<script src="/js/state.js"></script>
+<script src="/js/storage.js"></script>
+<script src="/js/zones.js"></script>
+<script src="/js/map.js"></script>
+<script src="/js/draw.js"></script>
+<script src="/js/user.js"></script>
+<script src="/js/ui.js"></script>
+<script src="/js/selftest.js"></script>
+<script src="/js/boot.js"></script>
 </body>
 </html>

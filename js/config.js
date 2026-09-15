@@ -5,7 +5,13 @@
 'use strict';
 
 const params = new URLSearchParams(window.location.search);
-const START_MODE    = (params.get('mode') || '').toLowerCase() === 'admin' ? 'admin' : 'user';
+/* Admin access gate: the panel is not exposed to normal users. Admins open
+   the app with ?mode=admin OR the /admin path (Vercel rewrites it) and must
+   enter this passcode (change it here). */
+const ADMIN_PASSCODE = '1234';
+const ADMIN_PATH     = '/admin';   // URL path that opens the admin panel
+const IS_ADMIN_PATH  = window.location.pathname.replace(/\/+$/, '') === ADMIN_PATH;
+const START_MODE    = ((params.get('mode') || '').toLowerCase() === 'admin' || IS_ADMIN_PATH) ? 'admin' : 'user';
 const START_EMPTY   = params.get('empty') === '1';     // skip demo seeding
 const RESET_STORAGE = params.get('reset') === '1';     // wipe storage, then seed
 const RUN_SELFTEST  = params.get('selftest') === '1';  // render assertion report
@@ -49,5 +55,5 @@ const REQUIRED_IDS = ['map','uiLayer','topWrap','bottomPanel','topPanel','status
   'routeSummary','dirArrow','dirText','dirDeg','coordsLine','adminPanel','zoneCounts','btnDrawDanger',
   'btnPlaceSafe','safeLabel','drawState','drawActions','btnFinishPoly','btnUndoVertex','btnCancelDraw',
   'btnExport','btnImport','btnFitZones','btnClearAll','adminList','importFile','toastHost','btnLocate',
-  'btnAdmin','btnMaps','geoModal','geoModalMsg','manualLat','manualLng','btnUseManual','btnUseDemo',
+  'btnMaps','geoModal','geoModalMsg','manualLat','manualLng','btnUseManual','btnUseDemo',
   'btnRetryGeo','boot','bootMsg','bootSub2','btnHideAdmin'];
