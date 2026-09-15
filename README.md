@@ -1,10 +1,38 @@
 # EvacRoute
 
-**EVACROUTE** — real-time disaster evacuation guidance in a **single self-contained file** (`index.html`).
+**EVACROUTE** — real-time disaster evacuation guidance, now split across **separate files**
+(no more single monolithic `index.html`).
 An admin marks danger zones on the map; users get their live position, a danger/safe verdict, the
 nearest safe zone, the compass heading and an animated route to it.
 
 No build step, no package manager, no server code — Leaflet 1.9.4 (CDN) + OpenStreetMap tiles.
+
+## Project structure
+
+```
+EvacRoute/
+├── index.html            markup only: DOM + <script>/<link> includes (load order matters)
+├── index_monolith_backup.html   the old single-file version (kept as backup)
+├── css/
+│   └── styles.css        all styling (dark glass UI, Leaflet theming, keyframes)
+└── js/
+    ├── errors.js         early error capture (must load first)
+    ├── utils.js          helpers: $, geometry math, formatting, toast()
+    ├── config.js         URL params, storage keys, demo dataset, layer styles
+    ├── state.js          single shared `state` object
+    ├── storage.js        localStorage persistence + GeoJSON parse/serialise + demo seeding
+    ├── zones.js          zone CRUD + GeoJSON export/import
+    ├── map.js            Leaflet init, zone/route rendering, admin list UI, mode switching
+    ├── draw.js           admin draw/place tools + keyboard shortcuts
+    ├── user.js           GPS flow, live tracking, status panel, GPS-fallback modal
+    ├── ui.js             button/event wiring
+    ├── selftest.js       ?selftest=1 assertion suites + report
+    └── boot.js           boot() + init() entry point (loads last)
+```
+
+The modules are plain (non-module) scripts that share top-level declarations; `js/utils.js`
+must load before `js/config.js`, and `js/config.js` before `js/state.js` — the order in
+`index.html` already takes care of this.
 
 ## Run it
 
