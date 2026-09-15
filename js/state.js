@@ -22,6 +22,7 @@ const state = {
   routeLine: null,
   routeEnd: null,
   lastEval: 0,
+  lastDangerAlert: 0,
   lastFitKey: '',
   layers: { danger: new Map(), safe: new Map() },
   drawing: { active: false, points: [], vertexLayers: [], guide: null, rubber: null },

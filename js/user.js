@@ -49,6 +49,9 @@ function evaluateUser(moveMap) {
   });
   state.nearest = findNearestSafe(p);
 
+  // government-style siren when the user is inside a danger zone
+  maybeDangerAlert();
+
   applyZoneStyles();
   if (state.inside.length && state.nearest) drawRoute(p, state.nearest.zone.vertices[0]);
   else clearRoute();

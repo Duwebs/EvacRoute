@@ -19,6 +19,7 @@ EvacRoute/
     ├── utils.js          helpers: $, geometry math, formatting, toast()
     ├── config.js         URL params, storage keys, demo dataset, layer styles
     ├── state.js          single shared `state` object
+    ├── alert.js          danger-zone emergency siren (Web Audio, EAS-style two-tone)
     ├── storage.js        localStorage persistence + GeoJSON parse/serialise + demo seeding
     ├── zones.js          zone CRUD + GeoJSON export/import
     ├── map.js            Leaflet init, zone/route rendering, admin list UI, mode switching
@@ -56,6 +57,10 @@ Map tiles need an internet connection (OpenStreetMap); everything else works off
    compass arrow, your coordinates/accuracy and the active zone counts.
 3. When a route is available, **🧭 Open route in Google Maps** opens walking directions.
    Position updates live via `watchPosition`; entering or leaving a danger zone raises a toast.
+   Entering a danger zone also sounds a government-style emergency siren (EAS-like two-tone,
+   synthesised in `js/alert.js` — no audio file) plus a strong vibration pattern; it repeats
+   every 30 s while the user remains inside. Mobile browsers require one tap on the page
+   before audio can play, so the app unlocks audio on the first touch automatically.
 
 **Admin view** (hidden from normal users — open `https://evac-route.vercel.app/admin` (or `?mode=admin`)
 and enter the admin passcode, default `1234`, set in `js/config.js` → `ADMIN_PASSCODE`; there is no
